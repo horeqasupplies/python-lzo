@@ -4,11 +4,16 @@
 from __future__ import print_function
 
 import os, sys
-import distutils
-from distutils.cmd import Command
-from distutils.core import setup
-from distutils.extension import Extension
-from distutils.util import split_quoted
+from ctypes.util import find_library
+
+# from distutils.cmd import Command
+# from distutils.core import setup
+# from distutils.extension import Extension
+
+from setuptools import setup
+from setuptools.extension import Extension
+#from setuptools.cmd import Command
+
 
 include_dirs = []
 define_macros = []
@@ -19,21 +24,21 @@ extra_objects = []
 extra_compile_args = []
 extra_link_args = []
 
-class TestCommand(Command):
-    user_options = []
+# class TestCommand(Command):
+#     user_options = []
 
-    def initialize_options(self):
-        pass
+#     def initialize_options(self):
+#         pass
 
-    def finalize_options(self):
-        pass
+#     def finalize_options(self):
+#         pass
 
-    def run(self):
-        import sys, subprocess
-        raise SystemExit(
-            subprocess.call([sys.executable,
-                             '-m',
-                             'nose']))
+#     def run(self):
+#         import sys, subprocess
+#         raise SystemExit(
+#             subprocess.call([sys.executable,
+#                              '-m',
+#                              'nose']))
 
 
 if sys.platform == "win32":
@@ -53,15 +58,21 @@ if sys.platform == "win32":
     else:
         lib_file = lib1_file
     extra_objects.append(lib_file)
+elif sys.platform == "darwin":
+
+    assert find_library("lzo2"), "lzo2 library is not in library search path. Likely the header won't be either"
+
+    libraries = ["lzo2"]
+    include_dirs.append(os.environ.get("PREFIX", "/usr")+"/include/lzo")
+    #include_dirs.append("./lzo-2.10/include/")
+
+    # Add extra compile flag for MacOS X
+    extra_link_args.append("-flat_namespace")
 else:
     libraries = ["lzo2"]
     include_dirs.append(os.environ.get("PREFIX", "/usr")+"/include/lzo")
     ##library_dirs.append("/usr/local/lib")
     ##runtime_library_dirs.append("/usr/local/lib")
-
-    # Add extra compile flag for MacOS X
-    if sys.platform[:-1] == "darwin":
-        extra_link_args.append("-flat_namespace")
 
 
 ###############################################################################
@@ -91,10 +102,10 @@ setup_args = get_kw(
     maintainer_email="jdboyd@jdboyd.net",
     url="https://github.com/jd-boyd/python-lzo",
     license="GNU General Public License (GPL)",
-    tests_require=['nose'],
-    cmdclass={
-        'test': TestCommand
-    },
+#    tests_require=['nose'],
+    # cmdclass={
+    #     'test': TestCommand
+    # },
     ext_modules=[ext],
     long_description="""
 This module provides Python bindings for the LZO data compression library.
@@ -108,7 +119,7 @@ competitive compression ratio while still decompressing at
 this very high speed.""",
 )
 
-if distutils.__version__ >= "1.0.2":
-    setup_args["platforms"] = "All"
+# if distutils.__version__ >= "1.0.2":
+#     setup_args["platforms"] = "All"
 
 setup(**setup_args)
