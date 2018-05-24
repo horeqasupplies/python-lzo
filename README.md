@@ -66,6 +66,28 @@ Until then, here we go:
   Current automated tests are done with Visual Studio 2013, but newer should work as well.
 * `python.exe setup.py install`
 
+# Making a release
+
+Check that the version number in `lzomodule.c`, `setup.py`, and `NEWS`
+is correct.  Update release date in `NEWS`.
+
+Make the release using the four steps below, then increment the
+numbers in `lzomodule.c` and `setup.py` as well as start a new section
+in `NEWS`.
+
+## Source Package
+
+python ./setup.py sdist
+twine upload --repository-url https://upload.pypi.org/legacy/ dist/python-lzo-*.tar.gz
+
+## macOS Wheel
+
+**_TODO_**
+
+## Windows Wheel
+
+**_TODO_**
+
 # Where's the documentation ?
 
 Python-LZO comes with built-in documentation which is accessible
