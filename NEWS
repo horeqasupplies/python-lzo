@@ -3,7 +3,8 @@ User visible changes for Python-LZO
 =======================================================================
 
 Changes in 1.13 (xx May 2018)
-  *
+  * Change to distributing wheels for OSX and Windows.
+    Linux will continue to use the source distribution.
 
 Changes in 1.12 (23 May 2018)
   * Update Windows support to lzo 2.0x.
