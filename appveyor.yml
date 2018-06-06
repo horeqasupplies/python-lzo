@@ -10,10 +10,10 @@ environment:
     - PYTHON: "C:\\Python27"
     - PYTHON: "C:\\Python34"
     - PYTHON: "C:\\Python35"
-    # - PYTHON: "C:\\Python27-x64"
-    # - PYTHON: "C:\\Python34-x64"
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python34-x64"
     #   DISTUTILS_USE_SDK: "1"
-    # - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python35-x64"
 
 install:
   # We need wheel installed to build wheels
@@ -51,7 +51,7 @@ after_test:
   # Again, you only need build.cmd if you're building C extensions for
   # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
   # interpreter
-#  - "build.cmd %PYTHON%\\python.exe setup.py bdist_wheel"
+  - "build.cmd %PYTHON%\\python.exe setup.py bdist_wheel"
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
