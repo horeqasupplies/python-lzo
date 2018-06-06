@@ -6,13 +6,8 @@ from __future__ import print_function
 import os, sys
 from ctypes.util import find_library
 
-# from distutils.cmd import Command
-# from distutils.core import setup
-# from distutils.extension import Extension
-
 from setuptools import setup
 from setuptools.extension import Extension
-#from setuptools.cmd import Command
 
 
 include_dirs = []
@@ -24,21 +19,6 @@ extra_objects = []
 extra_compile_args = []
 extra_link_args = []
 
-# class TestCommand(Command):
-#     user_options = []
-
-#     def initialize_options(self):
-#         pass
-
-#     def finalize_options(self):
-#         pass
-
-#     def run(self):
-#         import sys, subprocess
-#         raise SystemExit(
-#             subprocess.call([sys.executable,
-#                              '-m',
-#                              'nose']))
 
 
 if sys.platform == "win32":
@@ -59,8 +39,6 @@ if sys.platform == "win32":
         lib_file = lib1_file
     extra_objects.append(lib_file)
 elif sys.platform == "darwin":
-
-    assert find_library("lzo2"), "lzo2 library is not in library search path. Likely the header won't be either"
 
     libraries = ["lzo2"]
     include_dirs.append(os.environ.get("PREFIX", "/usr")+"/include/lzo")
