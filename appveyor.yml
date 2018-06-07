@@ -8,12 +8,22 @@ environment:
     # isn't covered by this document) at the time of writing.
 
     - PYTHON: "C:\\Python27"
-    - PYTHON: "C:\\Python34"
-    - PYTHON: "C:\\Python35"
+      B: win32
+    # - PYTHON: "C:\\Python34"
+    #   B: win32
+    # - PYTHON: "C:\\Python35"
+    #   B: win32
+    # - PYTHON: "C:\\Python36"
+    #   B: win32
     - PYTHON: "C:\\Python27-x64"
-    - PYTHON: "C:\\Python34-x64"
-    #   DISTUTILS_USE_SDK: "1"
-    - PYTHON: "C:\\Python35-x64"
+      DISTUTILS_USE_SDK: "1"    
+      B: win64
+    # - PYTHON: "C:\\Python34-x64"
+    #   B: win64
+    # - PYTHON: "C:\\Python35-x64"
+    #   B: win64
+    # - PYTHON: "C:\\Python36-x64"
+    #   B: win64
 
 install:
   # We need wheel installed to build wheels
@@ -29,12 +39,13 @@ install:
   - set PROJ_DIR=%cd%
   - cd c:\src\lzo-2.09
   - call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"
-  - call c:\src\lzo-2.09\B\win32\vc.bat
+  - call c:\src\lzo-2.09\B\%B%\vc.bat
+  #- dumpbin.exe -headers c:\src\lzo-2.09\lzo2.lib
   - dir c:\src\lzo-2.09
   - cd %PROJ_DIR%
 
 build_script:
-  - "%PYTHON%\\python.exe setup.py install"
+  - "%PYTHON%\\python.exe setup.py sdist bdist_wheel"
 
 test_script:
   # Put your test command here.
@@ -44,6 +55,7 @@ test_script:
   # Note that you must use the environment variable %PYTHON% to refer to
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python evrsion you want to use on PATH.
+  - "build.cmd %PYTHON%\\python.exe setup.py install"  
   - "build.cmd %PYTHON%\\python.exe setup.py test"
 
 after_test:
