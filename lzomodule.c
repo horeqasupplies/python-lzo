@@ -32,6 +32,7 @@
 #define MODULE_VERSION  "1.12"
 
 #include <Python.h>
+#include <lzo/lzo1x.h>
 #include <lzo/lzo1z.h>
 
 /* Python 2x3 compatible macros */
@@ -107,9 +108,9 @@ compress(PyObject *dummy, PyObject *args)
     if (result_str == NULL)
         return PyErr_NoMemory();
     if (level == 1)
-        wrkmem = (lzo_voidp) PyMem_Malloc(LZO1Z_1_MEM_COMPRESS);
+        wrkmem = (lzo_voidp) PyMem_Malloc(LZO1X_1_MEM_COMPRESS);
     else
-        wrkmem = (lzo_voidp) PyMem_Malloc(LZO1Z_999_MEM_COMPRESS);
+        wrkmem = (lzo_voidp) PyMem_Malloc(LZO1X_999_MEM_COMPRESS);
     if (wrkmem == NULL)
     {
         Py_DECREF(result_str);
@@ -130,13 +131,13 @@ compress(PyObject *dummy, PyObject *args)
     {
         if (header)
             out[0] = 0xf0;
-        err = lzo1z_1_compress(in, in_len, outc, &new_len, wrkmem);
+        err = lzo1x_1_compress(in, in_len, outc, &new_len, wrkmem);
     }
     else
     {
         if (header)
             out[0] = 0xf1;
-        err = lzo1z_999_compress(in, in_len, outc, &new_len, wrkmem);
+        err = lzo1x_999_compress(in, in_len, outc, &new_len, wrkmem);
     }
     Py_END_ALLOW_THREADS
 
@@ -321,7 +322,7 @@ optimize(PyObject *dummy, PyObject *args)
 
     Py_BEGIN_ALLOW_THREADS
     new_len = out_len;
-    err = lzo1z_optimize( header ? in+5 : in, in_len, out, &new_len, NULL);
+    err = lzo1x_optimize( header ? in+5 : in, in_len, out, &new_len, NULL);
     Py_END_ALLOW_THREADS
 
     PyMem_Free(out);
