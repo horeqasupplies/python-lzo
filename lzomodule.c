@@ -234,14 +234,11 @@ decompress(PyObject *dummy, PyObject *args)
     new_len = out_len;
     err = lzo1z_decompress_safe(in, in_len, out, &new_len, NULL);
     Py_END_ALLOW_THREADS
-    printf("Hi1");
     if (err != LZO_E_OK || (header && new_len != out_len) )
     {
-        printf("Hi2");
+        printf(stderr, "Hi2", err);
         Py_DECREF(result_str);
-        printf("Hi2");
         PyErr_Format(LzoError, "Compressed data violation %i", err);
-        printf("Hi2");
         return NULL;
     }
 
