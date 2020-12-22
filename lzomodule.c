@@ -232,7 +232,7 @@ decompress(PyObject *dummy, PyObject *args)
 
     Py_BEGIN_ALLOW_THREADS
     new_len = out_len;
-    err = lzo1z_decompress_safe(in, in_len, out, &new_len, NULL);
+    err = lzo1x_decompress_safe(in, in_len, out, &new_len, NULL);
     Py_END_ALLOW_THREADS
     if (err != LZO_E_OK || (header && new_len != out_len) )
     {
