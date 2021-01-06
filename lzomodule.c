@@ -192,7 +192,7 @@ decompress(PyObject *dummy, PyObject *args)
     lzo_uint new_len;
     int len;
     int buflen = -1;
-    int header = 1;
+    int header = 0;
     int err;
 
     /* init */
