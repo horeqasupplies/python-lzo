@@ -216,9 +216,9 @@ decompress(PyObject *dummy, PyObject *args)
 
     /* alloc buffers */
 #if PY_MAJOR_VERSION >= 3
-    result_str = PyBytes_FromStringAndSize(NULL, out_len);
+    result_str = PyBytes_FromStringAndSize(NULL, 1024);
 #else
-    result_str = PyString_FromStringAndSize(NULL, out_len);
+    result_str = PyString_FromStringAndSize(NULL, 1024);
 #endif
     if (result_str == NULL)
         return PyErr_NoMemory();
