@@ -211,7 +211,7 @@ decompress(PyObject *dummy, PyObject *args)
     else {
         if (buflen < 0) return PyErr_Format(LzoError, "Argument buflen required for headerless decompression");
         out_len = buflen;
-        in_len = len;
+        in_len = buflen-4;
     }
 
     /* alloc buffers */
@@ -231,8 +231,8 @@ decompress(PyObject *dummy, PyObject *args)
 #endif
 
     Py_BEGIN_ALLOW_THREADS
-    new_len = out_len;
-    err = lzo1z_decompress_safe(in, in_len, out, &new_len, NULL);
+    new_len = 0;
+    err = lzo1z_decompress(in, in_len, out, &new_len, NULL);
     Py_END_ALLOW_THREADS
     if (err != LZO_E_OK || (header && new_len != out_len) )
     {
