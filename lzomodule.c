@@ -234,7 +234,6 @@ decompress(PyObject *dummy, PyObject *args)
     new_len = out_len;
     err = lzo1z_decompress(in, in_len, out, &new_len, NULL);
     Py_END_ALLOW_THREADS
-    return result_str;
     if (err != LZO_E_OK || (header && new_len != out_len) )
     {
         Py_DECREF(result_str);
