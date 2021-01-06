@@ -211,14 +211,14 @@ decompress(PyObject *dummy, PyObject *args)
     else {
         if (buflen < 0) return PyErr_Format(LzoError, "Argument buflen required for headerless decompression");
         out_len = buflen;
-        in_len = buflen - 4;
+        in_len = len;
     }
 
     /* alloc buffers */
 #if PY_MAJOR_VERSION >= 3
-    result_str = PyBytes_FromStringAndSize(NULL, 1024);
+    result_str = PyBytes_FromStringAndSize(NULL, out_len);
 #else
-    result_str = PyString_FromStringAndSize(NULL, 1024);
+    result_str = PyString_FromStringAndSize(NULL, out_len);
 #endif
     if (result_str == NULL)
         return PyErr_NoMemory();
